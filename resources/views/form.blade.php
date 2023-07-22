@@ -182,10 +182,11 @@
             }
             var recordTable = document.getElementById("students-table");
 
-            Add a click event listener to the container
+            //Add a click event listener to the container
             recordTable.addEventListener('click', function(event) {
                 if (event.target.nodeName === 'BUTTON') {
                     let id = event.target.getAttribute('id');
+                    console.log("here");
                     $.ajax({
                         type: "get",
                         url: "{{ route('delStudent') }}",
