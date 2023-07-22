@@ -166,7 +166,7 @@
                                         <td>` + (data.students[i]['email']) + `</td>
                                         <td><img  src ="{{ asset('storage/`+img+`') }}" alt='` + img + `' width='` +
                                     120 + `' height='` + 80 + `'/></td>
-                                        <td> <button id="` + id + `">click</button></td>
+                                        <td> <button id="` + id + `">Delete</button></td>
                                         </tr>`);
                             }
                         } else {
@@ -181,21 +181,23 @@
                 $(".appendTr").remove();
             }
             var recordTable = document.getElementById("students-table");
-
             //Add a click event listener to the container
             recordTable.addEventListener('click', function(event) {
                 if (event.target.nodeName === 'BUTTON') {
                     let id = event.target.getAttribute('id');
-                    console.log("here");
                     $.ajax({
                         type: "get",
                         url: "{{ route('delStudent') }}",
-                        //data:id,
+                        data: {
+                            id: id
+                        },
                         success: function(data) {
                             console.log(data)
                         }
                     });
                     console.log('Button clicked:', event.target.getAttribute('id'));
+                    removeRow();
+                    studentData();
                 }
             });
         });
