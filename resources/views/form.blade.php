@@ -109,94 +109,95 @@
     </div>
     <script>
         $(document).ready(function() {
-                    $("#my-form").submit(function(event) {
-                        event.preventDefault();
-                        var form = $("#my-form")[0];
-                        var data = new FormData(form);
-                        $("#btnSubmit").prop('disabled', true);
+            $("#my-form").submit(function(event) {
+                event.preventDefault();
+                var form = $("#my-form")[0];
+                var data = new FormData(form);
+                $("#btnSubmit").prop('disabled', true);
 
-                        $.ajax({
-                            type: "post",
-                            url: "{{ route('addStudent') }}",
-                            data: data,
-                            processData: false,
-                            contentType: false,
-                            success: function(data) {
-                                $("#output").text(data.res);
-                                $("#btnSubmit").prop('disabled', false);
-                                $("input[type='text']").val('');
-                                $("input[type='email']").val('');
-                                $("input[type='file']").val('');
-                                removeRow();
-                                studentData();
-                            },
-                            error: function(e) {
-                                $("#output").text(e.responsetext);
-                                $("#btnSubmit").prop('disabled', false);
-                                $("input[type='text']").val('');
-                                $("input[type='email']").val('');
-                                $("input[type='file']").val('');
-                                removeRow();
-                                studentData();
-                            }
-                        })
-                    });
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('addStudent') }}",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        $("#output").text(data.res);
+                        $("#btnSubmit").prop('disabled', false);
+                        $("input[type='text']").val('');
+                        $("input[type='email']").val('');
+                        $("input[type='file']").val('');
+                        removeRow();
+                        studentData();
+                    },
+                    error: function(e) {
+                        $("#output").text(e.responsetext);
+                        $("#btnSubmit").prop('disabled', false);
+                        $("input[type='text']").val('');
+                        $("input[type='email']").val('');
+                        $("input[type='file']").val('');
+                        removeRow();
+                        studentData();
+                    }
+                })
+            });
 
-                    studentData();
-
-
+            studentData();
 
 
 
 
-                    function studentData() {
-                        $.ajax({
-                            type: "get",
-                            url: "{{ route('getStudents') }}",
-                            success: function(data) {
 
-                                if (data.students.length > 0) {
-                                    for (let i = 0; i < data.students.length; i++) {
-                                        let img = data.students[i]['file'];
-                                        let id = data.students[i]['id'];
-                                        console.log(id);
-                                        $("#students-table").append(`<tr class='appendTr'>
+
+            function studentData() {
+                $.ajax({
+                    type: "get",
+                    url: "{{ route('getStudents') }}",
+                    success: function(data) {
+
+                        if (data.students.length > 0) {
+                            for (let i = 0; i < data.students.length; i++) {
+                                let img = data.students[i]['file'];
+                                let id = data.students[i]['id'];
+                                console.log(id);
+                                $("#students-table").append(`<tr class='appendTr'>
                                         <td>` + (i + 1) + `</td>
                                         <td>` + (data.students[i]['name']) + `</td>
                                         <td>` + (data.students[i]['email']) + `</td>
                                         <td><img  src ="{{ asset('storage/`+img+`') }}" alt='` + img + `' width='` +
-                                            120 + `' height='` + 80 + `'/></td>
+                                    120 + `' height='` + 80 + `'/></td>
                                         <td> <button id="` + id + `">click</button></td>
                                         </tr>`);
-                                    }
-                                } else {
-                                    $("#students-table").append(
-                                        "<tr> <td colspan='4'>Data not found</td></tr>");
-                                }
                             }
-                        });
+                        } else {
+                            $("#students-table").append(
+                                "<tr> <td colspan='4'>Data not found</td></tr>");
+                        }
                     }
+                });
+            }
 
-                    function removeRow() {
-                        $(".appendTr").remove();
-                    }
-                    var recordTable = document.getElementById("students-table");
+            function removeRow() {
+                $(".appendTr").remove();
+            }
+            var recordTable = document.getElementById("students-table");
 
-                    // Add a click event listener to the container
-                    // recordTable.addEventListener('click', function(event) {
-                    // if (event.target.nodeName === 'BUTTON') {
-                    //     let id = event.target.getAttribute('id');
-                    //     $.ajax({
-                    //         type: "get",
-                    //         url: "{{ route('delStudent') }}",
-                    //         //data:id,
-                    //         success: function(data) {
-                    //             console.log(data)
-                    //         }
-                    //     });
-                    //     console.log('Button clicked:', event.target.getAttribute('id'));
-                    // }
-                    // });
+            Add a click event listener to the container
+            recordTable.addEventListener('click', function(event) {
+                if (event.target.nodeName === 'BUTTON') {
+                    let id = event.target.getAttribute('id');
+                    $.ajax({
+                        type: "get",
+                        url: "{{ route('delStudent') }}",
+                        //data:id,
+                        success: function(data) {
+                            console.log(data)
+                        }
+                    });
+                    console.log('Button clicked:', event.target.getAttribute('id'));
+                }
+            });
+        });
     </script>
 </body>
 
