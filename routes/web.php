@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+//route for crud
 Route::get('/add-student', function () {
     return view('form');
 });
